@@ -3,7 +3,7 @@
 ## Introduction
 This git repository contains the code used for the experiments in the ICML 2019 paper ["Robust Learning from Untrusted Sources"](https://arxiv.org/abs/1901.10310). In particular, the functions used, the scripts for running the large-scale experiments and Jupyter Notebooks for creating the plots and tables from the paper and included.
 
-**THE CODE IS NOT DIRECTLY EXECUTABLE**, since it requires the availability of the datasets (and the extracted features for the Animals with Attributes 2 experiments) in appropriate directories. However, by using the main.py files it should be easy to run experiments like ours.
+The code is readily executable, provided that the datasets and the extracted features for the Animals with Attributes 2 experiments are stored in appropriate directories. Using the main.py files it is easy to run experiments like ours.
 
 ## Description
 1. code_products contains the code for the Amazon Products experiments
@@ -15,24 +15,40 @@ This git repository contains the code used for the experiments in the ICML 2019 
 - functions.py contains the main part of our implementation, in particular the functions for preparing the data splits, corrupting the data, learning the logistic regression models, minimizing the 	bound, etc.
 - main.py is an example script for running the experiments described in the paper.
 - get_results_animals.ipynb is the script for creating the plots and tables from the paper (once the experiments have been run).
+- example_extract.py is an example script for extracing features from images using the [Tensornets package](https://github.com/taehoonlee/tensornets). Optionally, various types of curruptions (e.g. *blurring*) can be applied to the images before the feature representations are extracted.
+-PCA_features.py is the code used for performing the PCA projection of the features (see below and our paper for more details).
+
+3. robust_learning_from_untrusted_sources.pdf is the camera-ready version of our paper, together with the supplementary material.
 
 ## Data
 
 The experiments from the paper are performed on the following datasets:
 
 1. [Multitask Dataset of Product Reviews [1]](http://cvml.ist.ac.at/productreviews/) - A dataset of reviews for various Amazon products. The target task is sentiment analysis - is a review positive or negative?
-2. [Animals with Attributes 2 [2]](https://cvml.ist.ac.at/AwA2/) - A dataset of images of various animals, together with 85 binary attributes.
+2. [Animals with Attributes 2 [2]](https://cvml.ist.ac.at/AwA2/) - A dataset of images of various animals, together with 85 binary attributes. The used feature representations can be found [here](https://cvml.ist.ac.at/AwA2/dataset/AwA2-features-ICML2019.zip).
 
-For the Product Reviews, we used the readily available feature representations. For the Animals with Attributes data, one needs to extract appropriate features bofore applying our algorithm. In our experiments we used a ResNet50 pretrained network from the [Tensornets package](https://github.com/taehoonlee/tensornets) to obtain features for this dataset and for the [ImageNet](http://www.image-net.org/) data. Then a PCA projection was learned on ImageNet and applied to the Animals with Attributes 2 data. See the experiments section in the paper for more information.
+For the Product Reviews, we used the readily available feature representations.
+
+For the Animals with Attributes data, one needs to extract appropriate features bofore applying our algorithm. In our experiments we used a ResNet50 pretrained network from the [Tensornets package](https://github.com/taehoonlee/tensornets) to obtain features for this dataset and for the [ImageNet](http://www.image-net.org/) data. Then a PCA projection was learned on ImageNet and applied to the Animals with Attributes 2 data. See the experiments section in the paper for more information.
+
+For completeness, we also provide an example script showing how to extract the ResNet50 features of the images, as well as code for the PCA projection.
+
+## Dependencies
+
+To run the code, you need:
+- python 3
+- Tensorflow
+- The [Tensornets package](https://github.com/taehoonlee/tensornets) and access to the [ImageNet dataset](http://www.image-net.org/), in case you want to extract the features yourself.
+- A single experiment can easily be run on one machine. However, to reproduce the results, a large number of independent runs is required, so the experiments are best performed on a scientific cluster with multiple CPU cores, in parallel.
 
 ## Running the experiments
-With the relevant features extracted, the main.py scripts can be used to run experiments like those in the paper. Because of the large number of independent runs required, the experiments are best performed on a scientific cluster with multiple CPU cores, in parallel.
+With the relevant feature representations stored locally, the main.py scripts can be used to run experiments like those in the paper.
 
 For the Product Reviews, run:
 
 ```
-specific=0 # Binary label, indicating the type of experiment (books and non-books, or the experiment on all products)
-ind=0 # the index of the independent run or the product ID, depending on the type of experiment
+specific=0  # Binary label, indicating the type of experiment (books and non-books, or the experiment on all products)
+ind=0  # the index of the independent run or the product ID, depending on the type of experiment
 python main.py $specific $ind
 ```
 
