@@ -38,7 +38,7 @@ For completeness, we also provide an example script showing how to extract the R
 
 To run the code, you need:
 - python 3
-- Tensorflow
+- Tensorflow 1.10
 - The relevant dataset stored locally
 - The [Tensornets package](https://github.com/taehoonlee/tensornets) and access to the [ImageNet dataset](http://www.image-net.org/), in case you want to extract the features yourself.
 - A single experiment can easily be run on one machine. However, to reproduce the results, a large number of independent runs is required, so the experiments are best performed on a scientific cluster with multiple CPU cores, in parallel.
